@@ -1,0 +1,63 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+
+public class KWeakestRows {
+    public static void main(String[] args) {
+        int[][] mat = {
+            {1, 1, 0, 0, 0},
+            {1, 1, 1, 1, 0},
+            {1, 0, 0, 0, 0},
+            {1, 1, 0, 0, 0},
+            {1, 1, 1, 1, 1}
+        };
+        int k = 3;
+        
+        int[] weakestRows = kWeakestRows(mat, k);
+        
+        System.out.print("K weakest rows: ");
+        for (int row : weakestRows) {
+            System.out.print(row + " ");
+        }
+    }
+    
+    public static int[] kWeakestRows(int[][] mat, int k) {
+        PriorityQueue<int[]> pq = new PriorityQueue<>(k, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                if (a[1] != b[1]) {
+                    return b[1] - a[1]; // Compare by count of soldiers
+                } else {
+                    return b[0] - a[0]; // Compare by row index
+                }
+            }
+        });
+        
+        for (int i = 0; i < mat.length; i++) {
+            int soldiers = countSoldiers(mat[i]);
+            pq.offer(new int[] {i, soldiers});
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        
+        int[] result = new int[k];
+        while (!pq.isEmpty() && k > 0) {
+            result[--k] = pq.poll()[0];
+        }
+        
+        return result;
+    }
+    
+    public static int countSoldiers(int[] row) {
+        int count = 0;
+        for (int num : row) {
+            if (num == 1) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count;
+    }
+}

@@ -1,0 +1,28 @@
+class SuperClass {
+    int num;
+
+    SuperClass(int num) {
+        this.num = num;
+    }
+}
+
+class SubClass extends SuperClass {
+    int num;
+
+    SubClass(int superNum, int subNum) {
+        super(superNum);
+        this.num = subNum;
+    }
+
+    void display() {
+        System.out.println("Super class number: " + super.num);
+        System.out.println("Sub class number: " + num);
+    }
+}
+
+public class SubclassHiding {
+    public static void main(String[] args) {
+        SubClass subClass = new SubClass(100, 200);
+        subClass.display();
+    }
+}

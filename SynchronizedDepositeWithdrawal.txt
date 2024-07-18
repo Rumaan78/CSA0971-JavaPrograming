@@ -1,0 +1,53 @@
+import java.util.Scanner;
+
+class Customer {
+    private int accountNo;
+    private String accName;
+    private double balance;
+
+    public Customer(int accountNo, String accName, double balance) {
+        this.accountNo = accountNo;
+        this.accName = accName;
+        this.balance = balance;
+    }
+
+    public synchronized void deposit(double amount) {
+        System.out.println(accName + " is depositing " + amount);
+        balance += amount;
+        System.out.println("New Balance after deposit: " + balance);
+        notify();
+    }
+
+    public synchronized void withdraw(double amount) {
+        while (balance < amount) {
+            System.out.println(accName + " is waiting for deposit...");
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        balance -= amount;
+        System.out.println(accName + " successfully withdrew " + amount);
+        System.out.println("New Balance after withdrawal: " + balance);
+    }
+}
+
+public class SynchronizedDepositWithdrawal {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter amount to withdraw: ");
+        double withdrawAmount = scanner.nextDouble();
+        System.out.print("Enter amount to deposit: ");
+        double depositAmount = scanner.nextDouble();
+        
+        Customer customer = new Customer(12345, "John Doe", 10000);
+        
+        Thread withdrawalThread = new Thread(() -> customer.withdraw(withdrawAmount));
+        Thread depositThread = new Thread(() -> customer.deposit(depositAmount));
+        
+        withdrawalThread.start();
+        depositThread.start();
+    }
+}

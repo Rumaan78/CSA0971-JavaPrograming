@@ -1,0 +1,52 @@
+import java.util.Scanner;
+
+class BankAccount {
+    private String depositorName;
+    private long accountNumber;
+    private String accountType;
+    private double balance;
+
+    public BankAccount(String depositorName, long accountNumber, String accountType, double balance) {
+        this.depositorName = depositorName;
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.balance = balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited amount: " + amount);
+        } else {
+            System.out.println("Invalid amount for deposit.");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0) {
+            if (balance - amount >= 500) {
+                balance -= amount;
+                System.out.println("Withdrawn amount: " + amount);
+            } else {
+                System.out.println("Insufficient balance. Minimum balance should be maintained.");
+            }
+        } else {
+            System.out.println("Invalid amount for withdrawal.");
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class BankAccountOperations {
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount("Raja", 1001, "Savings", 10000);
+
+        // Test deposit and withdraw operations
+        account.deposit(5000);
+        account.withdraw(2000);
+        System.out.println("Current balance: " + account.getBalance());
+    }
+}

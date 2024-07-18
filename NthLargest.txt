@@ -1,0 +1,21 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class NthLargestNumber {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        int[] array = {14, 67, 48, 23, 5, 62};
+        Arrays.sort(array);
+        
+        System.out.print("Enter N: ");
+        int N = scanner.nextInt();
+
+        if (N > 0 && N <= array.length) {
+            int NthLargest = array[array.length - N];
+            System.out.println(N + "th Largest number: " + NthLargest);
+        } else {
+            System.out.println("Invalid N");
+        }
+    }
+}
